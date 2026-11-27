@@ -1,5 +1,5 @@
 import type { IconType } from "react-icons";
-import { FaLinkedin } from "react-icons/fa";
+import { FaFileAlt, FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { SiCheckmarx, SiGithub, SiHashnode } from "react-icons/si";
 
@@ -39,6 +39,13 @@ export const links: LinkItem[] = [
     shortcut: "gbl",
     icon: SiCheckmarx,
     color: "#e34f26",
+  },
+  {
+    label: "Resume",
+    href: "https://nevo.is-a.dev/resume",
+    shortcut: "grs",
+    icon: FaFileAlt,
+    color: "#f9e2af",
   },
   {
     label: "Contact Me",

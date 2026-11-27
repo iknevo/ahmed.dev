@@ -15,9 +15,14 @@ export function KeyHandler() {
 
   useEffect(() => {
     function openLink(href: string) {
-      if (href.startsWith("/")) router.push(href);
-      else if (href.startsWith("mailto:")) window.location.href = href;
-      else window.open(href, "_blank", "noopener,noreferrer");
+      if (href.startsWith("/")) return router.push(href);
+      if (href.startsWith("mailto:")) return void (window.location.href = href);
+
+      // Firefox-based browsers (Zen) block window.open from keydown handlers.
+      // Omit "noopener" so we can detect the block, then clear opener manually.
+      const win = window.open(href, "_blank");
+      if (win) win.opener = null;
+      else window.location.href = href;
     }
 
     function exitInsert() {

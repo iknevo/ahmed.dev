@@ -16,34 +16,6 @@ export const backShortcut = "gb";
 
 export const links: LinkItem[] = [
   {
-    label: "GitHub",
-    href: "https://github.com/iknevo",
-    shortcut: "ggh",
-    icon: SiGithub,
-    color: "#2dba4e",
-  },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/ahmed-abdelhafiez",
-    shortcut: "gli",
-    icon: FaLinkedin,
-    color: "#0a66c2",
-  },
-  {
-    label: "Main portfolio",
-    href: "https://nevo.is-a.dev",
-    shortcut: "gmp",
-    icon: SiHashnode,
-    color: "#e34f26",
-  },
-  {
-    label: "Blog",
-    href: "https://nevo.is-a.dev/blog",
-    shortcut: "gbl",
-    icon: SiCheckmarx,
-    color: "#e34f26",
-  },
-  {
     label: "Projects",
     href: "/projects",
     shortcut: "gpr",
@@ -65,11 +37,39 @@ export const links: LinkItem[] = [
     color: "#fab387",
   },
   {
+    label: "Main portfolio",
+    href: "https://nevo.is-a.dev",
+    shortcut: "gmp",
+    icon: SiHashnode,
+    color: "#e34f26",
+  },
+  {
+    label: "Blog",
+    href: "https://nevo.is-a.dev/blog",
+    shortcut: "gbl",
+    icon: SiCheckmarx,
+    color: "#e34f26",
+  },
+  {
     label: "Resume",
     href: "https://nevo.is-a.dev/resume",
     shortcut: "grs",
     icon: FaFileAlt,
     color: "#f9e2af",
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/iknevo",
+    shortcut: "ggh",
+    icon: SiGithub,
+    color: "#2dba4e",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/ahmed-abdelhafiez",
+    shortcut: "gli",
+    icon: FaLinkedin,
+    color: "#0a66c2",
   },
   {
     label: "Contact Me",

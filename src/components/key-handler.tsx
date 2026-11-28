@@ -1,17 +1,26 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-import { links } from "@/config/links";
+import { backShortcut, links } from "@/config/links";
 import { useModeStore } from "@/state/mode-store";
 
+const SCROLL_STEP_PX = 100;
+
+type Shortcut = { shortcut: string; run: () => void };
+
 function getLinkElements() {
-  return Array.from(document.querySelectorAll<HTMLAnchorElement>("#links a"));
+  return Array.from(document.querySelectorAll<HTMLElement>("[data-nav-item]"));
 }
 
 export function KeyHandler() {
   const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    useModeStore.getState().setFocusedIndex(undefined);
+  }, [pathname]);
 
   useEffect(() => {
     function openLink(href: string) {
@@ -24,6 +33,13 @@ export function KeyHandler() {
       if (win) win.opener = null;
       else window.location.href = href;
     }
+
+    // A shortcut runs as soon as it's complete, so on sub-pages "gb" (back) wins over
+    // "gbl" (blog); the blog shortcut still works from the home page.
+    const shortcuts: Shortcut[] = [
+      ...(pathname !== "/" ? [{ shortcut: backShortcut, run: () => router.push("/") }] : []),
+      ...links.map(({ shortcut, href }) => ({ shortcut, run: () => openLink(href) })),
+    ];
 
     function exitInsert() {
       const store = useModeStore.getState();
@@ -47,21 +63,35 @@ export function KeyHandler() {
 
         if (key === "j" || key === "k") {
           event.preventDefault();
+          const direction = key === "j" ? 1 : -1;
           const items = getLinkElements();
-          if (items.length === 0) return;
+
+          // Pages without selectable items (skills, experience) scroll instead.
+          if (items.length === 0) {
+            document.getElementById("scroll-container")?.scrollBy({
+              top: direction * SCROLL_STEP_PX,
+              behavior: event.repeat ? "auto" : "smooth",
+            });
+            return;
+          }
 
           const current = store.focusedIndex;
           const next =
             current === undefined
               ? 0
-              : Math.min(Math.max(current + (key === "j" ? 1 : -1), 0), items.length - 1);
+              : Math.min(Math.max(current + direction, 0), items.length - 1);
 
-          items[next]?.focus();
+          const item = items[next];
+          if (item) {
+            item.focus({ preventScroll: true });
+            // Keep the whole row in view, not just the focused control inside it.
+            (item.closest("li") ?? item).scrollIntoView({ block: "nearest", behavior: "smooth" });
+          }
           store.setFocusedIndex(next);
           return;
         }
 
-        if (isLetter && links.some((link) => link.shortcut.startsWith(key))) {
+        if (isLetter && shortcuts.some(({ shortcut }) => shortcut.startsWith(key))) {
           event.preventDefault();
           (document.activeElement as HTMLElement | null)?.blur();
           store.setMode("INSERT");
@@ -90,20 +120,20 @@ export function KeyHandler() {
     function typeChar(key: string) {
       const store = useModeStore.getState();
       const sequence = store.currentSequence + key;
-      if (!links.some((link) => link.shortcut.startsWith(sequence))) return;
+      if (!shortcuts.some(({ shortcut }) => shortcut.startsWith(sequence))) return;
 
       store.updateShortcutSequence(key);
 
-      const match = links.find((link) => link.shortcut === sequence);
+      const match = shortcuts.find(({ shortcut }) => shortcut === sequence);
       if (match) {
         exitInsert();
-        openLink(match.href);
+        match.run();
       }
     }
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [router]);
+  }, [router, pathname]);
 
   return null;
 }

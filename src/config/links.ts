@@ -1,5 +1,5 @@
 import type { IconType } from "react-icons";
-import { FaFileAlt, FaLinkedin } from "react-icons/fa";
+import { FaBriefcase, FaFileAlt, FaFolderOpen, FaLayerGroup, FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { SiCheckmarx, SiGithub, SiHashnode } from "react-icons/si";
 
@@ -10,6 +10,9 @@ export type LinkItem = {
   icon: IconType;
   color: string;
 };
+
+// Goes back to the home page; only active on sub-pages.
+export const backShortcut = "gb";
 
 export const links: LinkItem[] = [
   {
@@ -39,6 +42,27 @@ export const links: LinkItem[] = [
     shortcut: "gbl",
     icon: SiCheckmarx,
     color: "#e34f26",
+  },
+  {
+    label: "Projects",
+    href: "/projects",
+    shortcut: "gpr",
+    icon: FaFolderOpen,
+    color: "#89b4fa",
+  },
+  {
+    label: "Skills",
+    href: "/skills",
+    shortcut: "gsk",
+    icon: FaLayerGroup,
+    color: "#a6e3a1",
+  },
+  {
+    label: "Experience",
+    href: "/experience",
+    shortcut: "gex",
+    icon: FaBriefcase,
+    color: "#fab387",
   },
   {
     label: "Resume",

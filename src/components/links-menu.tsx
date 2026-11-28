@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { CSSProperties } from "react";
 
 import { links } from "@/config/links";
@@ -12,12 +13,15 @@ export function LinksMenu() {
   return (
     <ul id="links" className="flex w-full flex-col gap-2 text-base lg:text-[22px]">
       {links.map(({ label, href, shortcut, icon: Icon, color }, index) => {
-        const isExternal = !href.startsWith("/") && !href.startsWith("mailto:");
+        const isInternal = href.startsWith("/");
+        const isExternal = !isInternal && !href.startsWith("mailto:");
+        const Anchor = isInternal ? Link : "a";
         const isMatching = currentSequence !== "" && shortcut.startsWith(currentSequence);
 
         return (
           <li key={shortcut}>
-            <a
+            <Anchor
+              data-nav-item
               href={href}
               target={isExternal ? "_blank" : undefined}
               rel={isExternal ? "noopener noreferrer" : undefined}
@@ -44,7 +48,7 @@ export function LinksMenu() {
                   </span>
                 ))}
               </span>
-            </a>
+            </Anchor>
           </li>
         );
       })}

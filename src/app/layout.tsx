@@ -28,7 +28,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex h-screen flex-col select-none">
         <KeyHandler />
 
-        <div className="flex flex-1 flex-col items-center overflow-auto pt-16">
+        <div
+          id="scroll-container"
+          className="flex flex-1 flex-col items-center overflow-auto pt-16"
+        >
           <AsciiArt />
           {children}
         </div>

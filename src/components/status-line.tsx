@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { SiHtml5 } from "react-icons/si";
 
 import { useModeStore } from "@/state/mode-store";
@@ -7,6 +8,8 @@ import { useModeStore } from "@/state/mode-store";
 export function StatusLine() {
   const mode = useModeStore((state) => state.mode);
   const focusedIndex = useModeStore((state) => state.focusedIndex);
+  const pathname = usePathname();
+  const fileName = pathname === "/" ? "index" : pathname.slice(1);
 
   return (
     <div
@@ -15,7 +18,7 @@ export function StatusLine() {
     >
       <span className="bg-mode-color text-background h-full px-0.5 font-bold sm:px-2">{mode}</span>
 
-      <span className="pl-2">~/index.html</span>
+      <span className="pl-2">~/{fileName}.html</span>
 
       <span className="grow"></span>
 
